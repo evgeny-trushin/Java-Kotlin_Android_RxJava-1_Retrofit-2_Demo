@@ -5,6 +5,7 @@ import com.example.assignment.helpers.ops.CacheStrategyOps;
 import com.example.assignment.helpers.ops.RequestStrategyOps;
 import com.example.assignment.i002.model.api.dto.Pojo;
 import com.example.assignment.i002.model.api.strategies.ExpressNetCacheStrategy;
+import com.example.assignment.i002.model.api.strategies.ExpressNetRequestStrategy;
 
 import rx.exceptions.Exceptions;
 import rx.subjects.ReplaySubject;
@@ -18,23 +19,25 @@ public class ExpressNetModel {
             Pojo,
             ExpressNetApiImpl,
             ExpressNetCacheStrategy<Pojo>,
-            RequestStrategyOps>
+            ExpressNetRequestStrategy>
             apiFactory = new ApiAbstractFactory<>();
         apiFactory.setApiStrategy(new ExpressNetApiImpl());
+        apiFactory.setRequestStrategy(new ExpressNetRequestStrategy<>());
+        apiFactory.setCacheStrategy(new ExpressNetCacheStrategy<>());
         apiFactory.setApiGetMethod(ExpressNetApiImpl::getData);
         final ReplaySubject<Pojo> subject = ReplaySubject.create();
-//        apiFactory.getObservableDataFromApi()
-//            .subscribe(response -> {
-//                    try {
-//                        apiFactory.getCacheStrategy().completeRequestAndStoreData(response, apiFactory.getRequestStrategy());
-//                        subject.onCompleted();
-//                    } catch (Exception e) {
-//                        throw Exceptions.propagate(e);
-//                    }
-//                }, error -> {
-//                    //ErrorsHandlingStrategy.handleError(error, subject)
-//                }
-//            );
+        apiFactory.getObservableDataFromApi()
+            .subscribe(response -> {
+                    try {
+                        apiFactory.getCacheStrategy().completeRequestAndStoreData(response, apiFactory.getRequestStrategy());
+                        subject.onCompleted();
+                    } catch (Exception e) {
+                        throw Exceptions.propagate(e);
+                    }
+                }, error -> {
+                    //ErrorsHandlingStrategy.handleError(error, subject)
+                }
+            );
         return subject;
     }
 }

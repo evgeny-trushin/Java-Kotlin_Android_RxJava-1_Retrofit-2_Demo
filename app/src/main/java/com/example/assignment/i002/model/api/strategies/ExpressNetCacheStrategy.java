@@ -11,7 +11,7 @@ public class ExpressNetCacheStrategy<T> implements CacheStrategyOps<T,Pojo> {
 
     @Override
     public Boolean isValid(RequestStrategyOps<T, Pojo> mRequestStrategy) throws Exception {
-        return null;
+        return false;
     }
 
     @Override
