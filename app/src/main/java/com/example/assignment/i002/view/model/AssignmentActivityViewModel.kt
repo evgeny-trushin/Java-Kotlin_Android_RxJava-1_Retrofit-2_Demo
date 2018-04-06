@@ -1,31 +1,32 @@
 package com.example.assignment.i002.view.model
 
 
+import android.R
 import android.content.Context
-import android.os.Bundle
-import android.support.v4.app.FragmentManager
 
 import java.io.Serializable
 import android.os.Parcelable
 import com.example.assignment.i002.view.activity.AssignmentActivity
-import com.example.assignment.i002.view.adapter.SimpleRecyclerViewAdapter
-import com.example.assignment.i002.view.adapter.SimpleViewPager
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import com.example.assignment.helpers.VisibilityViewModel
 
 
 class AssignmentActivityViewModel(
         var text: String,
-        private val list: MutableList<String>,
-        @Transient var manager: FragmentManager,
-        var color: Int,
-        private val fragmentNumbers: Int
+        val list: MutableList<String>,
+        var visibilityOfProgressBar: Boolean
 ) : Serializable {
     var mViewPagerState: Parcelable? = null
-    fun getRecyclerAdapter(context: Context) = SimpleRecyclerViewAdapter(context, list)
-    fun getViewPagerAdapter() = SimpleViewPager(manager, fragmentNumbers, Bundle())
-    fun getBackgroundColor(context: Context) = context.resources.getColor(color)
-    fun clickOnButton(context: Context, color: Int) {
+    fun isProgressBarVisible() = VisibilityViewModel.getVisibleIfTrue(visibilityOfProgressBar)
+    fun getSpinnerAdapter(context: Context): ArrayAdapter<String> {
+       return ArrayAdapter(context, android.R.layout.simple_spinner_item, list)
+    }
+    fun clickOnButton(context: Context) {
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
         val viewModel = (context as AssignmentActivity).viewModel
-        viewModel.color = color
+        viewModel.visibilityOfProgressBar = false
+        viewModel.text = "test"
         context.bindViewModel(viewModel)
     }
 }

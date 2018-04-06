@@ -6,33 +6,36 @@ import android.support.v7.app.AppCompatActivity
 import com.example.assignment.i002.databinding.ActivityAssignmentBinding
 import me.relex.circleindicator.CircleIndicator
 import android.support.v4.view.ViewPager
+import android.support.v7.widget.AppCompatSpinner
 import android.view.View
 import com.example.assignment.helpers.ViewPagerModified
 import com.example.assignment.i002.R
 import com.example.assignment.i002.view.model.AssignmentActivityViewModel
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.Toast
 
 
 class AssignmentActivity : AppCompatActivity() {
     private var mBind: ActivityAssignmentBinding? = null
     var viewModel = AssignmentActivityViewModel(
-            "Test", arrayListOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5"), supportFragmentManager,
-            R.color.colorWhite, 4
+            "Car - 40 mins \nTrain - 40 mins", arrayListOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5"), true
     )
     private val mStateKey = "STATE"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBind = DataBindingUtil.setContentView(this, R.layout.activity_assignment)
-        restoreViewModelState(savedInstanceState)
-        viewModel.manager = supportFragmentManager
-        mBind?.viewModel = viewModel
-        mBind?.buttons?.viewModel = viewModel
-        ((mBind?.root as View).findViewById(R.id.pager) as ViewPager).addOnAdapterChangeListener { pager, _, _ ->
-            run {
-                ((mBind?.root as View).findViewById(R.id.indicator) as CircleIndicator).setViewPager(pager)
-                restoreState(pager as ViewPagerModified)
+        val spinner = (mBind?.root as View).findViewById(R.id.spinner) as AppCompatSpinner
+        spinner.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View, position: Int, id: Long) {
+
+                Toast.makeText(selectedItemView.context, viewModel.list[position], Toast.LENGTH_SHORT).show()
             }
+            override fun onNothingSelected(parentView: AdapterView<*>) {}
         }
+        restoreViewModelState(savedInstanceState)
+        mBind?.viewModel = viewModel
     }
 
     private fun restoreViewModelState(savedInstanceState: Bundle?) {
@@ -48,8 +51,8 @@ class AssignmentActivity : AppCompatActivity() {
 
     fun bindViewModel(locaViewModel: AssignmentActivityViewModel) {
         viewModel = locaViewModel
-        val viewPager = (mBind?.root as View).findViewById(R.id.pager) as ViewPagerModified
-        saveState(viewPager)
+
+//        saveState(viewPager)
         mBind?.viewModel = viewModel
     }
 
@@ -61,8 +64,8 @@ class AssignmentActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        val viewPager = (mBind?.root as View).findViewById(R.id.pager) as ViewPagerModified
-        saveState(viewPager)
+//        val viewPager = (mBind?.root as View).findViewById(R.id.pager) as ViewPagerModified
+//        saveState(viewPager)
         outState?.putSerializable(mStateKey, viewModel)
     }
 }

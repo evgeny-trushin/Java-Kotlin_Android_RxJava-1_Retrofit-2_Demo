@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+        xmlns:bind="http://schemas.android.com/tools"
+    >
 
     <data>
+
         <variable
             name="ViewModel"
             type="com.example.assignment.i002.view.model.AssignmentActivityViewModel"/>
@@ -12,79 +14,74 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@{ViewModel.getBackgroundColor(context)}">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="64dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp">
 
-            <android.support.v7.widget.RecyclerView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:adapter="@{ViewModel.getRecyclerAdapter(context)}"
-                android:background="@android:color/transparent"
-                android:clipChildren="false"
-                android:fadeScrollbars="false"
-                android:orientation="horizontal"
-                android:scrollbarFadeDuration="0"
-                android:scrollbars="vertical"
-                app:layoutManager="android.support.v7.widget.GridLayoutManager"
-                />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal">
-
-                <com.example.assignment.helpers.ViewPagerModified
-                    android:id="@+id/pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="8dp"
-                    android:adapter="@{ViewModel.getViewPagerAdapter()}"
-                    tools:layout_editor_absoluteX="0dp">
-                </com.example.assignment.helpers.ViewPagerModified>
-
-                <me.relex.circleindicator.CircleIndicator
-                    android:id="@+id/indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_gravity="bottom"
-                    app:ci_drawable="@drawable/indicator"
-                    app:ci_drawable_unselected="@drawable/indicator"
-
-                    />
-            </FrameLayout>
-
-            <include
-                android:id="@+id/include"
-                layout="@layout/simple_views"
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:adapter="@{ViewModel.getSpinnerAdapter(context)}"
 
+
+
+                />
+            <!--bind:selectedValue="@={ViewModel.text}"-->
+            <!--app:setOnItemClickListener="@{()->ViewModel.onSpinnerClick(context)}"-->
+
+            <ProgressBar
+                android:id="@+id/loaderBar"
+                style="@style/ProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:visibility="@{ViewModel.isProgressBarVisible()}"
+                app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                app:layout_constraintHorizontal_bias="0.50"
+                app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@+id/bodyText"
                 />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:paddingBottom="16dp"
+                android:text="@string/Title"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:paddingBottom="16dp"
                 android:text="@{ViewModel.text}"
                 />
 
-            <include
-                android:id="@+id/buttons"
-                layout="@layout/simple_buttons"
+
+            <Button
+                android:id="@+id/btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/border_light_gray"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:onClick="@{()->ViewModel.clickOnButton(context)}"
+                android:padding="8dp"
+                android:text="@string/btn_navigate"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
+                app:layout_constraintEnd_toStartOf="@+id/textView2"
+                app:layout_constraintStart_toStartOf="parent"/>
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </layout>

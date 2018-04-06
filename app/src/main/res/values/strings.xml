@@ -1,9 +1,5 @@
 <resources>
     <string name="app_name">I - 001</string>
-    <string name="item_1">Item 1</string>
-    <string name="item_2">Item 2</string>
-    <string name="item_3">Item 3</string>
-    <string name="grey_btn">greyBtn</string>
-    <string name="pink_btn">pinkBtn</string>
-    <string name="blue_btn">blueBtn</string>
+    <string name="btn_navigate">Navigate</string>
+    <string name="Title">Mode of Transport:</string>
 </resources>
