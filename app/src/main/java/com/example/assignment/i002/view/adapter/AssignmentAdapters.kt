@@ -41,7 +41,7 @@ class SimpleRecyclerViewAdapter(context: Context?, items: MutableList<String>?) 
     override fun bindItem(holder: RecyclerView.ViewHolder?, item: String, position: Int) {
         (holder as CardHolder).bind?.viewModel = AssignmentItemViewModel(item, { context, text ->
             run {
-                val vm = (context as AssignmentActivity).viewModel
+                val vm = (context as AssignmentActivity).mViewModel
                 vm.text = text
                 context.bindViewModel(vm)
             }

@@ -1,11 +1,12 @@
 package com.example.assignment.i002.model.api;
 
-import com.example.assignment.helpers.ApiAbstractFactory;
-import com.example.assignment.helpers.ops.CacheStrategyOps;
-import com.example.assignment.helpers.ops.RequestStrategyOps;
-import com.example.assignment.i002.model.api.dto.Pojo;
+import com.example.assignment.helpers.network.ApiAbstractFactory;
+import com.example.assignment.helpers.network.ErrorHandler;
+import com.example.assignment.i002.model.api.dto.SamplePojo;
 import com.example.assignment.i002.model.api.strategies.ExpressNetCacheStrategy;
 import com.example.assignment.i002.model.api.strategies.ExpressNetRequestStrategy;
+
+import java.util.List;
 
 import rx.exceptions.Exceptions;
 import rx.subjects.ReplaySubject;
@@ -13,30 +14,31 @@ import rx.subjects.ReplaySubject;
 
 public class ExpressNetModel {
 
-    public static ReplaySubject<Pojo> getData() throws Exception {
+    private static final String TAG = ExpressNetModel.class.getSimpleName();
+
+    public static ReplaySubject<List<SamplePojo>> getData() throws Exception {
         ApiAbstractFactory<
             Void,
-            Pojo,
+            List<SamplePojo>,
             ExpressNetApiImpl,
-            ExpressNetCacheStrategy<Pojo>,
+            ExpressNetCacheStrategy<List<SamplePojo>>,
             ExpressNetRequestStrategy>
             apiFactory = new ApiAbstractFactory<>();
         apiFactory.setApiStrategy(new ExpressNetApiImpl());
         apiFactory.setRequestStrategy(new ExpressNetRequestStrategy<>());
         apiFactory.setCacheStrategy(new ExpressNetCacheStrategy<>());
         apiFactory.setApiGetMethod(ExpressNetApiImpl::getData);
-        final ReplaySubject<Pojo> subject = ReplaySubject.create();
+        final ReplaySubject<List<SamplePojo>> subject = ReplaySubject.create();
         apiFactory.getObservableDataFromApi()
-            .subscribe(response -> {
+            .subscribe(data -> {
                     try {
-                        apiFactory.getCacheStrategy().completeRequestAndStoreData(response, apiFactory.getRequestStrategy());
+                        apiFactory.getCacheStrategy().completeRequestAndStoreData(data, apiFactory.getRequestStrategy());
+                        subject.onNext(data);
                         subject.onCompleted();
                     } catch (Exception e) {
                         throw Exceptions.propagate(e);
                     }
-                }, error -> {
-                    //ErrorsHandlingStrategy.handleError(error, subject)
-                }
+                }, error -> ErrorHandler.handleError(error, subject)
             );
         return subject;
     }

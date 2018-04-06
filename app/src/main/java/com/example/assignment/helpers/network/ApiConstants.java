@@ -1,4 +1,4 @@
-package com.example.assignment.helpers;
+package com.example.assignment.helpers.network;
 
 /**
  * A container of constants for API usage

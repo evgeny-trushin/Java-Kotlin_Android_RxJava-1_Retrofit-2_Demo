@@ -1,14 +1,13 @@
 package com.example.assignment.i002.model.api;
 
-import com.example.assignment.i002.model.api.dto.Pojo;
+import com.example.assignment.i002.model.api.dto.SamplePojo;
 
-import retrofit2.http.Body;
+import java.util.List;
+
 import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.PUT;
 import rx.Observable;
 
 public interface ExpressNetApiOps {
     @GET("/sample.json")
-    Observable<Pojo> getData();
+    Observable<List<SamplePojo>> getData();
 }

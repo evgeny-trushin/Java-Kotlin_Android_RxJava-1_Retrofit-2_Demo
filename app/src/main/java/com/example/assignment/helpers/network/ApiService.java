@@ -1,4 +1,4 @@
-package com.example.assignment.helpers;
+package com.example.assignment.helpers.network;
 
 import android.support.annotation.NonNull;
 
@@ -61,7 +61,6 @@ public class ApiService {
         try {
             httpClient.addInterceptor(chain -> {
                 Request original = chain.request();
-
                 Request.Builder requestBuilder = original.newBuilder()
                     .header("Accept", "application/json")
                     .header("Content-Type", "application/json");

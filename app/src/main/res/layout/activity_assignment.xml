@@ -24,15 +24,17 @@
 
             <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/spinner"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:selectedItemPosition="@{ViewModel.position}"
+                android:padding="8dp"
                 android:adapter="@{ViewModel.getSpinnerAdapter(context)}"
-
-
-
+                android:visibility="@{ViewModel.isActionVisible()}"
                 />
             <!--bind:selectedValue="@={ViewModel.text}"-->
-            <!--app:setOnItemClickListener="@{()->ViewModel.onSpinnerClick(context)}"-->
 
             <ProgressBar
                 android:id="@+id/loaderBar"
@@ -49,12 +51,25 @@
                 />
 
             <TextView
+                android:id="@+id/loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:text="@string/loading"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                android:visibility="@{ViewModel.isProgressBarVisible()}"
+                />
+
+            <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp"
                 android:text="@string/Title"
                 android:textStyle="bold"
+                android:visibility="@{ViewModel.isActionVisible()}"
                 />
 
             <TextView
@@ -63,6 +78,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp"
                 android:text="@{ViewModel.text}"
+                android:visibility="@{ViewModel.isActionVisible()}"
                 />
 
 
@@ -71,11 +87,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/border_light_gray"
+                android:background="@drawable/border_light_grey"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
                 android:onClick="@{()->ViewModel.clickOnButton(context)}"
+                android:visibility="@{ViewModel.isActionVisible()}"
                 android:padding="8dp"
                 android:text="@string/btn_navigate"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView2"

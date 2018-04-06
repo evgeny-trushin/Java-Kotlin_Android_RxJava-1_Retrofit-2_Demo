@@ -1,7 +1,8 @@
 package com.example.assignment.i002.model.api.dto;
 
-public class Location
-{
+import java.io.Serializable;
+
+public class Location implements Serializable {
     private String longitude;
 
     private String latitude;

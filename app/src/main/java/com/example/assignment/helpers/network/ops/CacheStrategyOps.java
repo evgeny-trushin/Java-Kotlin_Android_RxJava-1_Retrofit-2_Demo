@@ -1,4 +1,4 @@
-package com.example.assignment.helpers.ops;
+package com.example.assignment.helpers.network.ops;
 
 import com.example.assignment.helpers.strategies.CacheValidityType;
 

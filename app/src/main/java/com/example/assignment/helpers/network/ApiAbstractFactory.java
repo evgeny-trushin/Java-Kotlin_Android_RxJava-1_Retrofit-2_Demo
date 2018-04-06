@@ -1,13 +1,14 @@
-package com.example.assignment.helpers;
+package com.example.assignment.helpers.network;
 
-import com.example.assignment.helpers.ops.CacheStrategyOps;
-import com.example.assignment.helpers.ops.DeleteStrategyOps;
-import com.example.assignment.helpers.ops.RequestStrategyOps;
+import com.example.assignment.helpers.CrashlyticsProxy;
+import com.example.assignment.helpers.network.ops.CacheStrategyOps;
+import com.example.assignment.helpers.network.ops.DeleteStrategyOps;
+import com.example.assignment.helpers.network.ops.RequestStrategyOps;
 import com.example.assignment.helpers.strategies.CacheValidityType;
 
 import rx.Observable;
 
-public class ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE  extends CacheStrategyOps, REQUEST_STRATEGY extends RequestStrategyOps> {
+public class ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE extends CacheStrategyOps, REQUEST_STRATEGY extends RequestStrategyOps> {
 
     final private String TAG = getClass().getSimpleName();
     private Observable<RESPONSE> mObservableData = null;
@@ -33,42 +34,32 @@ public class ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE  extends CacheStra
         Observable<RESPONSE> getObservableData(API api, String token);
     }
 
-    public ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE , REQUEST_STRATEGY> setApiGetMethod(GetObservableGetData<RESPONSE, API> observableData) throws Exception {
-        if (null != mRequestStrategy&&null!=mApiStrategy) {
+    public ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE, REQUEST_STRATEGY> setApiGetMethod(GetObservableGetData<RESPONSE, API> observableData) throws Exception {
+        if (null != mRequestStrategy && null != mApiStrategy) {
             this.mObservableData = observableData.getObservableData(mApiStrategy);
         } else {
-//            throw new Exception("RequestStrategy is NULL");
+            throw new Exception("RequestStrategy is NULL");
         }
         return this;
     }
 
-    public ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE , REQUEST_STRATEGY> setApiGetMethodWithToken(GetObservableDataWithToken<RESPONSE, API> observableData, String token) throws Exception {
+    public ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE, REQUEST_STRATEGY> setApiGetMethodWithToken(GetObservableDataWithToken<RESPONSE, API> observableData, String token) throws Exception {
         if (null != mRequestStrategy) {
-            this.mObservableData = observableData.getObservableData(mApiStrategy,token);
+            this.mObservableData = observableData.getObservableData(mApiStrategy, token);
         } else {
             throw new Exception("RequestStrategy is NULL");
         }
         return this;
     }
 
-    public ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE , REQUEST_STRATEGY> setApiPostMethod(GetObservablePostData<REQUEST, RESPONSE, API> observableData) throws Exception {
+    public ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE, REQUEST_STRATEGY> setApiPostMethod(GetObservablePostData<REQUEST, RESPONSE, API> observableData) throws Exception {
         if (null != mRequestStrategy) {
-            this.mObservableData = observableData.getObservableData(mApiStrategy,getRequestStrategy().getRequest());
+            this.mObservableData = observableData.getObservableData(mApiStrategy, getRequestStrategy().getRequest());
         } else {
             throw new Exception("RequestStrategy is NULL");
         }
         return this;
     }
-
-    public ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE , REQUEST_STRATEGY> setApiPostMethodWithToken(GetObservablePostDataWithToken<REQUEST, RESPONSE, API> observableData) throws Exception {
-        if (null != mRequestStrategy) {
-            this.mObservableData = observableData.getObservableData(mApiStrategy,getRequestStrategy().getRequest(),getRequestStrategy().getToken());
-        } else {
-            throw new Exception("RequestStrategy is NULL");
-        }
-        return this;
-    }
-
 
     public void invalidateCache() {
         try {
@@ -76,6 +67,7 @@ public class ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE  extends CacheStra
                 mCacheStrategy.invalidateCache();
             }
         } catch (Exception e) {
+            CrashlyticsProxy.e(TAG, e);
         }
     }
 
@@ -85,7 +77,7 @@ public class ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE  extends CacheStra
                 mRequestStrategy.completeParallelRequest();
             }
         } catch (Exception e) {
-//            cp.e(TAG, e);
+//            CrashlyticsProxy.e(TAG, e);
         }
     }
 
@@ -95,7 +87,7 @@ public class ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE  extends CacheStra
                 mRequestStrategy.completeParallelRequest();
             }
         } catch (Exception e) {
-//            cp.e(TAG, e);
+            CrashlyticsProxy.e(TAG, e);
         }
     }
 
@@ -121,19 +113,19 @@ public class ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE  extends CacheStra
 
 
     @SuppressWarnings("unchecked")
-    public ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE , REQUEST_STRATEGY> setApiStrategy(API mApi) {
+    public ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE, REQUEST_STRATEGY> setApiStrategy(API mApi) {
         this.mApiStrategy = mApi;
         return this;
     }
 
     @SuppressWarnings("unchecked")
-    public ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE , REQUEST_STRATEGY> setCacheStrategy(CacheStrategyOps<REQUEST, RESPONSE> mCacheStrategy) {
+    public ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE, REQUEST_STRATEGY> setCacheStrategy(CacheStrategyOps<REQUEST, RESPONSE> mCacheStrategy) {
         this.mCacheStrategy = mCacheStrategy;
         return this;
     }
 
     @SuppressWarnings("unchecked")
-    public ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE , REQUEST_STRATEGY> setRequestStrategy(RequestStrategyOps<REQUEST, RESPONSE> mRequestStrategy) {
+    public ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE, REQUEST_STRATEGY> setRequestStrategy(RequestStrategyOps<REQUEST, RESPONSE> mRequestStrategy) {
         this.mRequestStrategy = mRequestStrategy;
         return this;
     }
@@ -143,11 +135,11 @@ public class ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE  extends CacheStra
     }
 
     private void catchError(String tag, Exception e) {
-//        cp.e(TAG, e);
+        CrashlyticsProxy.e(TAG, e);
     }
 
     public void catchError(String tag, Throwable e) {
-//        cp.e(TAG, e);
+        CrashlyticsProxy.e(TAG, e);
     }
 
     public CacheStrategyOps<REQUEST, RESPONSE> getCacheStrategy() {
@@ -157,15 +149,12 @@ public class ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE  extends CacheStra
     @SuppressWarnings("unchecked")
     public Observable<RESPONSE> getObservableDataFromApi() throws Exception {
         try {
-            if(null!=mRequestStrategy) {
-                if (getCacheStrategy().isValid(mRequestStrategy)) {
-                    return getCacheStrategy().getData();
-                } else {
-                    return mObservableData;
-                }
-            }else{
+            if (null!=getCacheStrategy()&&getCacheStrategy().isValid(mRequestStrategy)) {
+                return getCacheStrategy().getData();
+            } else {
                 return mObservableData;
             }
+
         } catch (Exception e) {
             catchError(TAG, e);
             throw e;
