@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <data>
+
+        <variable
+            name="ViewModel"
+            type="com.example.assignment.i002.view.model.AssignmentItemViewModel"/>
+    </data>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/border_light_gray"
+        android:gravity="center_horizontal|center_vertical"
+        android:padding="16dp"
+        android:text="@{ViewModel.text}"
+        android:onClick="@{()->ViewModel.onClick(context)}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</layout>

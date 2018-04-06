@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+        <import type="com.example.assignment.i002.R.color"/>
+        <variable
+            name="ViewModel"
+            type="com.example.assignment.i002.view.model.AssignmentActivityViewModel"/>
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+        <Button
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:background="@drawable/border_light_gray"
+            android:gravity="center"
+            android:clickable="true"
+            android:onClick="@{()->ViewModel.clickOnButton(context,com.example.assignment.i002.R.color.material_blue_grey_800)}"
+            android:padding="16dp"
+            android:text="@string/grey_btn"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
+            app:layout_constraintEnd_toStartOf="@+id/textView2"
+            app:layout_constraintStart_toStartOf="parent"
+            android:focusable="true"/>
+
+        <Button
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:background="@drawable/border_light_gray"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/pink_btn"
+            android:onClick="@{()->ViewModel.clickOnButton(context,com.example.assignment.i002.R.color.colorAccent)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView3"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <Button
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:background="@drawable/border_light_gray"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/blue_btn"
+            android:onClick="@{()->ViewModel.clickOnButton(context,com.example.assignment.i002.R.color.colorPrimary)}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

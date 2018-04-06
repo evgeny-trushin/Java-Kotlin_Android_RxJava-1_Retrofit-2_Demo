@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="ViewModel"
+            type="com.example.assignment.i002.view.model.AssignmentActivityViewModel"/>
+    </data>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@{ViewModel.getBackgroundColor(context)}">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="64dp"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:adapter="@{ViewModel.getRecyclerAdapter(context)}"
+                android:background="@android:color/transparent"
+                android:clipChildren="false"
+                android:fadeScrollbars="false"
+                android:orientation="horizontal"
+                android:scrollbarFadeDuration="0"
+                android:scrollbars="vertical"
+                app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal">
+
+                <com.example.assignment.helpers.ViewPagerModified
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="8dp"
+                    android:adapter="@{ViewModel.getViewPagerAdapter()}"
+                    tools:layout_editor_absoluteX="0dp">
+                </com.example.assignment.helpers.ViewPagerModified>
+
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom"
+                    app:ci_drawable="@drawable/indicator"
+                    app:ci_drawable_unselected="@drawable/indicator"
+
+                    />
+            </FrameLayout>
+
+            <include
+                android:id="@+id/include"
+                layout="@layout/simple_views"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="16dp"
+                android:text="@{ViewModel.text}"
+                />
+
+            <include
+                android:id="@+id/buttons"
+                layout="@layout/simple_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</layout>
