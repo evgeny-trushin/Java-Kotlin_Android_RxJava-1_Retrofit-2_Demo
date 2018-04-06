@@ -1,4 +1,4 @@
-package com.example.assignment.i002.model.api;
+package com.example.assignment.i002.model.api.dto;
 
 public class Pojo
 {

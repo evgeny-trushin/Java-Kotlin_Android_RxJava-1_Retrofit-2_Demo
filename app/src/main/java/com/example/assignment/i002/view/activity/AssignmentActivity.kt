@@ -14,6 +14,15 @@ import com.example.assignment.i002.view.model.AssignmentActivityViewModel
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.Toast
+import rx.exceptions.Exceptions
+import rx.subjects.ReplaySubject
+import com.example.assignment.helpers.ApiAbstractFactory
+import android.R.attr.countDown
+
+import rx.observers.TestSubscriber
+
+import com.example.assignment.i002.model.api.ExpressNetModel
+import com.example.assignment.i002.model.api.dto.Pojo
 
 
 class AssignmentActivity : AppCompatActivity() {
@@ -32,10 +41,20 @@ class AssignmentActivity : AppCompatActivity() {
 
                 Toast.makeText(selectedItemView.context, viewModel.list[position], Toast.LENGTH_SHORT).show()
             }
+
             override fun onNothingSelected(parentView: AdapterView<*>) {}
         }
         restoreViewModelState(savedInstanceState)
         mBind?.viewModel = viewModel
+
+        val subject = ExpressNetModel.getData()
+        val subscriber = TestSubscriber<Pojo>()
+        subject.subscribe({ ok ->
+            subject.subscribe(subscriber)
+        }, { error ->
+            throw Exceptions.propagate(error)
+        }
+        )
     }
 
     private fun restoreViewModelState(savedInstanceState: Bundle?) {
@@ -51,8 +70,6 @@ class AssignmentActivity : AppCompatActivity() {
 
     fun bindViewModel(locaViewModel: AssignmentActivityViewModel) {
         viewModel = locaViewModel
-
-//        saveState(viewPager)
         mBind?.viewModel = viewModel
     }
 
@@ -64,8 +81,6 @@ class AssignmentActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-//        val viewPager = (mBind?.root as View).findViewById(R.id.pager) as ViewPagerModified
-//        saveState(viewPager)
         outState?.putSerializable(mStateKey, viewModel)
     }
 }
