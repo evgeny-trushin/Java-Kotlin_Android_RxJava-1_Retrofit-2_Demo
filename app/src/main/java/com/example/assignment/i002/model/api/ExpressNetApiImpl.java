@@ -11,7 +11,6 @@ import rx.schedulers.Schedulers;
 
 public class ExpressNetApiImpl implements ExpressNetApiOps {
 
-    private String TAG = this.getClass().getSimpleName();
     private static ExpressNetApiOps mService = ApiService.createService(ExpressNetApiOps.class);
 
     @Override

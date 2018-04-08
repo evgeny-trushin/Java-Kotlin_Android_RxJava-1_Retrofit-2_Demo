@@ -2,32 +2,53 @@ package com.example.assignment.i002.view.model
 
 
 import android.content.Context
-
-import java.io.Serializable
-import android.os.Parcelable
+import android.content.Intent
+import android.databinding.ObservableField
+import android.net.Uri
+import android.support.v4.content.ContextCompat.startActivity
 import android.widget.ArrayAdapter
 import com.example.assignment.helpers.VisibilityViewModel
 import com.example.assignment.i002.model.api.dto.SamplePojo
-import android.support.v4.content.ContextCompat.startActivity
-import android.content.Intent
-import android.net.Uri
-
+import com.example.assignment.i002.view.activity.AssignmentActivity
+import java.io.Serializable
 
 class AssignmentActivityViewModel(
-        var text: String,
-        var position: Int,
-        @Transient var spinnerState: Parcelable?,
-        var list: MutableList<String>?,
         var data: List<SamplePojo>?,
-        var visibilityOfProgressBar: Boolean
+        var visibilityOfProgressBar: Boolean,
+        @Transient var context: Context?
 ) : Serializable {
-    fun isProgressBarVisible() = VisibilityViewModel.visibleIfTrue(null == list)
-    fun isActionVisible() = VisibilityViewModel.hiddenIfTrue(null == list)
+    var text: String? = ""
+    var position: Int = -1
+    fun isProgressBarVisible() = VisibilityViewModel.visibleIfTrue(null == data)
+    fun isActionVisible() = VisibilityViewModel.hiddenIfTrue(null == data)
     fun getSpinnerAdapter(context: Context): ArrayAdapter<String> {
-        return ArrayAdapter(context, android.R.layout.simple_spinner_item, if (null == list) {
-            ArrayList()
-        } else list)
+        val array = ArrayList<String>()
+        if (null != data) {
+            for (datum in this.data!!) {
+                array.add(datum.name)
+            }
+        }
+        return ArrayAdapter(context, android.R.layout.simple_spinner_item, array);
     }
+
+    var selectedState: String?
+        get() = ObservableField("State").get()
+        set(newSelectedValue) {
+            var index = 0
+            data?.forEach {
+                if (it.name == newSelectedValue) {
+                    if (-1 == position || position != index) {
+                        text="Car: " + it.fromcentral?.car
+                        if (null != it.fromcentral?.train) {
+                            text+="\nTrain: " + it.fromcentral.train
+                        }
+                        position = index
+                        (context!! as AssignmentActivity).bindViewModel(this)
+                    }
+                }
+                index++
+            }
+        }
 
     fun clickOnButton(context: Context) {
         val location = (data?.get(position) as SamplePojo).location

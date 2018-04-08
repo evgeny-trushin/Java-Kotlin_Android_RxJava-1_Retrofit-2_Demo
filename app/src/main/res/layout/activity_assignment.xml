@@ -30,11 +30,11 @@
                 android:layout_gravity="start"
                 android:gravity="start"
                 android:selectedItemPosition="@{ViewModel.position}"
+                bind:selectedValue="@={ViewModel.selectedState}"
                 android:padding="8dp"
                 android:adapter="@{ViewModel.getSpinnerAdapter(context)}"
                 android:visibility="@{ViewModel.isActionVisible()}"
                 />
-            <!--bind:selectedValue="@={ViewModel.text}"-->
 
             <ProgressBar
                 android:id="@+id/loaderBar"
