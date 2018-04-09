@@ -22,6 +22,10 @@ public class CrashlyticsProxy {
         }
     }
 
+    public static void eTestFailedReport(String tag, String e) {
+        eTestFailedReport(tag,new Exception(e));
+    }
+
 
     public static <Exception extends Throwable> void e(String tag, Exception e) {
         if (BuildConfig.DEBUG) {
