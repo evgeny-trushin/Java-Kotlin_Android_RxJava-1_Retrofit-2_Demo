@@ -1,39 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:bind="http://schemas.android.com/tools"
     >
 
     <data>
 
         <variable
             name="ViewModel"
-            type="com.example.assignment.i002.view.model.AssignmentActivityViewModel"/>
+            type="com.example.assignment.i002.view.model.AssignmentViewModel"/>
     </data>
 
-    <android.support.v4.widget.NestedScrollView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:visibility="@{ViewModel.isErrorVisible()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="32dp">
-
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/spinner"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:orientation="vertical">
+            <TextView
+                android:text="There is no connection to the Internet"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:gravity="start"
-                android:selectedItemPosition="@={ViewModel.proxyPosition}"
-                android:padding="8dp"
-                android:adapter="@{ViewModel.getSpinnerAdapter(context)}"
-                android:visibility="@{ViewModel.isActionVisible()}"
-                />
+                android:layout_height="wrap_content"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:onClick="@{()->ViewModel.clickOnRetryButton(context)}"
+                android:text="Update"/>
 
             <ProgressBar
                 android:id="@+id/loaderBar"
@@ -53,51 +48,80 @@
                 android:id="@+id/loading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
                 android:paddingBottom="16dp"
                 android:text="@string/loading"
                 android:textStyle="bold"
-                android:gravity="center_horizontal"
-                android:layout_gravity="center_horizontal"
                 android:visibility="@{ViewModel.isProgressBarVisible()}"
                 />
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:text="@string/Title"
-                android:textStyle="bold"
-                android:visibility="@{ViewModel.isActionVisible()}"
-                />
+        </LinearLayout>
 
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:text="@{ViewModel.text}"
-                android:visibility="@{ViewModel.isActionVisible()}"
-                />
+        <android.support.v4.widget.NestedScrollView
 
+            android:visibility="@{ViewModel.isContentVisible()}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
-            <Button
-                android:id="@+id/btn"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/border_light_grey"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:onClick="@{()->ViewModel.clickOnButton(context)}"
-                android:visibility="@{ViewModel.isActionVisible()}"
-                android:padding="8dp"
-                android:text="@string/btn_navigate"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
-                app:layout_constraintEnd_toStartOf="@+id/textView2"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:orientation="vertical"
+                android:padding="32dp">
 
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/spinner"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:adapter="@{ViewModel.getSpinnerAdapter(context)}"
+                    android:gravity="start"
+                    android:padding="8dp"
+                    android:selectedItemPosition="@={ViewModel.proxyPosition}"
+                    android:visibility="@{ViewModel.isActionVisible()}"
+                    />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp"
+                    android:text="@string/Title"
+                    android:textStyle="bold"
+                    android:visibility="@{ViewModel.isActionVisible()}"
+                    />
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp"
+                    android:text="@{ViewModel.text}"
+                    android:visibility="@{ViewModel.isActionVisible()}"
+                    />
+
+
+                <Button
+                    android:id="@+id/btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/border_light_grey"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:onClick="@{()->ViewModel.clickOnButton(context)}"
+                    android:padding="8dp"
+                    android:text="@string/btn_navigate"
+                    android:visibility="@{ViewModel.isActionVisible()}"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
+                    app:layout_constraintEnd_toStartOf="@+id/textView2"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
 </layout>

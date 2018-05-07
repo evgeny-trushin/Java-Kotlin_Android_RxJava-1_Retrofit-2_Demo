@@ -11,5 +11,4 @@ public enum ExpressNetPreferences implements PreferencesManagerOps {
         public Object getValue() {
             return value;
         }
-
 }

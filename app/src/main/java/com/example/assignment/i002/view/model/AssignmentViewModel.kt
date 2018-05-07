@@ -7,19 +7,36 @@ import android.databinding.ObservableField
 import android.net.Uri
 import android.support.v4.content.ContextCompat.startActivity
 import android.widget.ArrayAdapter
-import com.example.assignment.helpers.CrashlyticsProxy
 import com.example.assignment.helpers.VisibilityViewModel
 import com.example.assignment.i002.model.api.dto.SamplePojo
 import com.example.assignment.i002.view.activity.AssignmentActivity
+import com.example.assignment.i002.view.operation.ModelViewError
 import java.io.Serializable
 
-class AssignmentActivityViewModel(
+data class AssignmentViewModel(
         var data: List<SamplePojo>?,
-        var visibilityOfProgressBar: Boolean,
         @Transient var context: Context?
-) : Serializable {
+) : Serializable, ModelViewError {
+
     var text: String? = ""
-    var position: Int? = -1;
+    private var position: Int? = -1
+
+    override fun isContentVisible()  = VisibilityViewModel.hiddenIfTrue(error)
+
+    override fun isErrorVisible()  = VisibilityViewModel.visibleIfTrue(error)
+
+    override var error: Boolean = true
+
+//    override fun error(): Int {
+//        ret
+//    }
+
+    override fun clickOnRetryButton(context:Context) {
+        this.error = false
+        (context!! as AssignmentActivity).bindViewModel(this)
+    }
+
+
     var proxyPosition: Int?
         get() = ObservableField<Int>(position).get()
         set(newSelectedPosition) {
@@ -34,7 +51,7 @@ class AssignmentActivityViewModel(
             }
         }
 
-    fun isProgressBarVisible() = VisibilityViewModel.visibleIfTrue(null == data)
+    fun isProgressBarVisible() = VisibilityViewModel.hiddenIfTrue(null == data)
     fun isActionVisible() = VisibilityViewModel.hiddenIfTrue(null == data)
     fun getSpinnerAdapter(context: Context): ArrayAdapter<String> {
         val array = ArrayList<String>()
@@ -43,9 +60,8 @@ class AssignmentActivityViewModel(
                 array.add(datum.name)
             }
         }
-        return ArrayAdapter(context, android.R.layout.simple_spinner_item, array);
+        return ArrayAdapter(context, android.R.layout.simple_spinner_item, array)
     }
-
     fun clickOnButton(context: Context) {
         val location = (data?.get(proxyPosition!!) as SamplePojo).location
         val gmmIntentUri = Uri.parse("geo:" + location.latitude + "," + location.longitude)
@@ -56,4 +72,3 @@ class AssignmentActivityViewModel(
         }
     }
 }
-
