@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.assignment.helpers.AppApplication;
-import com.example.assignment.helpers.CrashlyticsProxy;
 
 /**
  * Simplify the usage of preferences

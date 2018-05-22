@@ -1,6 +1,6 @@
 package com.example.assignment.helpers.network;
 
-import com.example.assignment.helpers.CrashlyticsProxy;
+import com.example.assignment.helpers.LogProxy;
 import com.example.assignment.helpers.exceptions.ParallelRequestException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -46,7 +46,7 @@ public class ParallelRequest {
         long currentTime = System.currentTimeMillis();
         try {
             if (mParallelRequests.containsKey(hash)) {
-                CrashlyticsProxy.e(TAG, "containKey: Yes" + hash);
+                LogProxy.e(TAG, "containKey: Yes" + hash);
                 Long timeOutReached = mParallelRequests.get(hash);
                 if (timeOutReached <= currentTime) {
                     mParallelRequests.put(hash, currentTime + requestTimeout * 1000);
@@ -56,7 +56,7 @@ public class ParallelRequest {
                                 try {
                                     mParallelRequests.remove(entry.getKey());
                                 } catch (Exception e) {
-                                    CrashlyticsProxy.d(TAG, e);
+                                    LogProxy.d(TAG, e);
                                 }
                             }
                         }
@@ -66,12 +66,12 @@ public class ParallelRequest {
                     return true;
                 }
             } else {
-                CrashlyticsProxy.e(TAG, "containKey: NO: " + hash);
+                LogProxy.e(TAG, "containKey: NO: " + hash);
                 mParallelRequests.put(hash, currentTime + requestTimeout * 1000);
                 return false;
             }
         } catch (Exception e) {
-            CrashlyticsProxy.d(TAG, e);
+            LogProxy.d(TAG, e);
             mParallelRequests.put(hash, currentTime + requestTimeout * 1000);
             return false;
         }
@@ -85,7 +85,7 @@ public class ParallelRequest {
         try {
             mParallelRequests.remove(hash);
         } catch (Exception e) {
-            CrashlyticsProxy.d("completeParallelRequest", e);
+            LogProxy.d("completeParallelRequest", e);
         }
     }
 

@@ -59,7 +59,7 @@ public class GenericSingleton {
                 try {
                     sInstance.mMap.put(classOf, object);
                 } catch (Exception e) {
-                    CrashlyticsProxy.e(TAG,e);
+                    LogProxy.e(TAG,e);
                 }
                 return object;
             }

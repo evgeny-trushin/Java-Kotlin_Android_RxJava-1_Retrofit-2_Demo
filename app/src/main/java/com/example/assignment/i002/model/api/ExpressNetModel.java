@@ -1,5 +1,6 @@
 package com.example.assignment.i002.model.api;
 
+import com.example.assignment.helpers.ErrorsHandlerKotlin;
 import com.example.assignment.helpers.network.ApiAbstractFactory;
 import com.example.assignment.helpers.network.ErrorHandler;
 import com.example.assignment.i002.model.api.dto.SamplePojo;
@@ -29,17 +30,22 @@ public class ExpressNetModel {
         apiFactory.setCacheStrategy(new ExpressNetCacheStrategy<>());
         apiFactory.setApiGetMethod(ExpressNetApiImpl::getData);
         final ReplaySubject<List<SamplePojo>> subject = ReplaySubject.create();
-        apiFactory.getObservableDataFromApi()
-            .subscribe(data -> {
-                    try {
-                        apiFactory.getCacheStrategy().completeRequestAndStoreData(data, apiFactory.getRequestStrategy());
-                        subject.onNext(data);
-                        subject.onCompleted();
-                    } catch (Exception e) {
-                        throw Exceptions.propagate(e);
-                    }
-                }, error -> ErrorHandler.handleError(error, subject)
-            );
+        try {
+            apiFactory.getObservableDataFromApi()
+                .subscribe(data -> {
+                        try {
+                            apiFactory.getCacheStrategy().completeRequestAndStoreData(data, apiFactory.getRequestStrategy());
+                            subject.onNext(data);
+                            subject.onCompleted();
+                        } catch (Exception e) {
+                            throw Exceptions.propagate(e);
+                        }
+                    }, error -> ErrorsHandlerKotlin.Companion.handleError(error, subject)
+                );
+        } catch (Exception e) {
+            ErrorsHandlerKotlin.Companion.handleError(e, subject);
+            apiFactory.getCacheStrategy().completeRequest(apiFactory.getRequestStrategy());
+        }
         return subject;
     }
 }

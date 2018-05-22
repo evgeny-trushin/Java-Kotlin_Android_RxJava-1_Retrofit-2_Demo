@@ -11,63 +11,40 @@
     </data>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:visibility="@{ViewModel.isErrorVisible()}"
+        <!--
+                android:visibility="@{ViewModel.isErrorVisible()}"
+        -->
+
+        <include
+            android:id="@+id/layout_error"
+            layout="@layout/layout_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:text="There is no connection to the Internet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:onClick="@{()->ViewModel.clickOnRetryButton(context)}"
-                android:text="Update"/>
+            android:visibility="@{ViewModel.isErrorVisible()}"
+            />
 
-            <ProgressBar
-                android:id="@+id/loaderBar"
-                style="@style/ProgressBar"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:visibility="@{ViewModel.isProgressBarVisible()}"
-                app:layout_constraintEnd_toStartOf="@+id/right_guideline"
-                app:layout_constraintHorizontal_bias="0.50"
-                app:layout_constraintStart_toStartOf="@+id/left_guideline"
-                app:layout_constraintTop_toBottomOf="@+id/bodyText"
-                />
+        <include
+            android:id="@+id/layout_loading"
+            layout="@layout/layout_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{ViewModel.isProgressBarVisible()}"
+            />
 
-            <TextView
-                android:id="@+id/loading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:paddingBottom="16dp"
-                android:text="@string/loading"
-                android:textStyle="bold"
-                android:visibility="@{ViewModel.isProgressBarVisible()}"
-                />
-
-        </LinearLayout>
 
         <android.support.v4.widget.NestedScrollView
-
-            android:visibility="@{ViewModel.isContentVisible()}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="@{ViewModel.isContentVisible()}"
             >
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="32dp">
 
@@ -81,7 +58,6 @@
                     android:gravity="start"
                     android:padding="8dp"
                     android:selectedItemPosition="@={ViewModel.proxyPosition}"
-                    android:visibility="@{ViewModel.isActionVisible()}"
                     />
 
                 <TextView
@@ -91,7 +67,6 @@
                     android:paddingBottom="16dp"
                     android:text="@string/Title"
                     android:textStyle="bold"
-                    android:visibility="@{ViewModel.isActionVisible()}"
                     />
 
                 <TextView
@@ -100,9 +75,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="16dp"
                     android:text="@{ViewModel.text}"
-                    android:visibility="@{ViewModel.isActionVisible()}"
                     />
-
 
                 <Button
                     android:id="@+id/btn"
@@ -116,7 +89,6 @@
                     android:onClick="@{()->ViewModel.clickOnButton(context)}"
                     android:padding="8dp"
                     android:text="@string/btn_navigate"
-                    android:visibility="@{ViewModel.isActionVisible()}"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
                     app:layout_constraintEnd_toStartOf="@+id/textView2"
                     app:layout_constraintStart_toStartOf="parent"/>

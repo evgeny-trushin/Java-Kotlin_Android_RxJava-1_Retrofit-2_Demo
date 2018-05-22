@@ -20,6 +20,8 @@ class AssignmentActivity : AppCompatActivity() {
     fun bindViewModel(localViewModel: AssignmentViewModel) {
         mViewModel = localViewModel
         mViewModel.context = this
+        mBind.layoutError?.viewModel = mViewModel
+        mBind.layoutLoading?.viewModel = mViewModel
         mBind.viewModel = mViewModel
         mBind.executePendingBindings()
     }
@@ -27,24 +29,28 @@ class AssignmentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBind = DataBindingUtil.setContentView(this, R.layout.activity_assignment)
-        mViewModel = restoreViewModelState(savedInstanceState, mStateKey)
-        bindViewModel(mViewModel)
-        val subject = ExpressNetModel.getData()
-        subject.observeOn(AndroidSchedulers.mainThread()).subscribe(
-                { data ->
-                    mViewModel.data = data
-                    bindViewModel(mViewModel)
-                }, { error -> throw Exceptions.propagate(error) }
+        bindViewModel(restoreViewModelState(savedInstanceState, mStateKey))
+        ExpressNetModel.getData().observeOn(AndroidSchedulers.mainThread()).subscribe(
+                {
+                    //                    Thread.sleep(10000)
+                    bindViewModel(
+                            AssignmentViewModel(
+                                    data = it,
+                                    isLoading = false,
+                                    error = true)
+                    )
+                }, {
+            error -> throw Exceptions.propagate(error) }
         )
     }
 
-    private fun restoreViewModelState(savedInstanceState: Bundle?, stateKey: String): AssignmentViewModel{
+    private fun restoreViewModelState(savedInstanceState: Bundle?, stateKey: String): AssignmentViewModel {
         val localViewModel = savedInstanceState?.getSerializable(stateKey)
-        return if (null != localViewModel) {
-            localViewModel as AssignmentViewModel
-        }else{
-            AssignmentViewModel(null, null)
-        }
+//        return if (null != localViewModel) {
+//            localViewModel as AssignmentViewModel
+//        } else {
+           return AssignmentViewModel(isLoading = true, error = false)
+//        }
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {

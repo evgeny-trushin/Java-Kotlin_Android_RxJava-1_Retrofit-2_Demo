@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">I - 001</string>
+    <string name="app_name">I - 002</string>
     <string name="btn_navigate">Navigate</string>
     <string name="Title">Mode of Transport:</string>
     <string name="loading">Download data…</string>

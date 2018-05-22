@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
-</android.support.constraint.ConstraintLayout>
+    <data>
+
+        <variable
+            name="ViewModel"
+            type="com.example.assignment.i002.view.operation.ModelViewLoadingErrorOps"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="There is no connection to the Internet"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="@{()->ViewModel.clickOnRetryLoadButton(context)}"
+            android:text="Update"/>
+
+    </LinearLayout>
+</layout>

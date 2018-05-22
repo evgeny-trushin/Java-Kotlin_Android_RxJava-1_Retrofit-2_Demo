@@ -1,6 +1,6 @@
 package com.example.assignment.helpers.network;
 
-import com.example.assignment.helpers.CrashlyticsProxy;
+import com.example.assignment.helpers.LogProxy;
 import com.example.assignment.helpers.network.ops.CacheStrategyOps;
 import com.example.assignment.helpers.network.ops.DeleteStrategyOps;
 import com.example.assignment.helpers.network.ops.RequestStrategyOps;
@@ -67,7 +67,7 @@ public class ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE extends CacheStrat
                 mCacheStrategy.invalidateCache();
             }
         } catch (Exception e) {
-            CrashlyticsProxy.e(TAG, e);
+            LogProxy.e(TAG, e);
         }
     }
 
@@ -77,7 +77,7 @@ public class ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE extends CacheStrat
                 mRequestStrategy.completeParallelRequest();
             }
         } catch (Exception e) {
-//            CrashlyticsProxy.e(TAG, e);
+//            LogProxy.e(TAG, e);
         }
     }
 
@@ -87,7 +87,7 @@ public class ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE extends CacheStrat
                 mRequestStrategy.completeParallelRequest();
             }
         } catch (Exception e) {
-            CrashlyticsProxy.e(TAG, e);
+            LogProxy.e(TAG, e);
         }
     }
 
@@ -135,11 +135,11 @@ public class ApiAbstractFactory<REQUEST, RESPONSE, API, CACHE extends CacheStrat
     }
 
     private void catchError(String tag, Exception e) {
-        CrashlyticsProxy.e(TAG, e);
+        LogProxy.e(TAG, e);
     }
 
     public void catchError(String tag, Throwable e) {
-        CrashlyticsProxy.e(TAG, e);
+        LogProxy.e(TAG, e);
     }
 
     public CacheStrategyOps<REQUEST, RESPONSE> getCacheStrategy() {
