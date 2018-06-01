@@ -7,6 +7,7 @@ import android.databinding.ObservableField
 import android.net.Uri
 import android.support.v4.content.ContextCompat.startActivity
 import android.widget.ArrayAdapter
+import com.example.assignment.helpers.network.ErrorCode
 import com.example.assignment.i002.model.api.dto.SamplePojo
 import com.example.assignment.i002.view.activity.AssignmentActivity
 import com.example.assignment.i002.view.operation.ModelViewLoadingOps
@@ -16,7 +17,8 @@ data class AssignmentViewModel(
         var data: List<SamplePojo>? = null,
         @Transient var context: Context? = null,
         override var isLoading: Boolean = false,
-        override var error: Boolean = false
+        override var error: Boolean = false,
+        override var errorCode: ErrorCode = ErrorCode.ERROR_IGNORE
 ) : Serializable, ModelViewLoadingOps {
 
     var text: String? = ""

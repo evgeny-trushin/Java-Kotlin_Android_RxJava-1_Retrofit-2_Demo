@@ -16,28 +16,11 @@ import retrofit2.adapter.rxjava.HttpException
 import rx.subjects.ReplaySubject
 
 class ErrorsHandlerKotlin {
-    internal val TAG = ErrorsHandlerKotlin::class.java.simpleName
 
-     companion object Test {
+    companion object {
+        val TAG = ErrorsHandlerKotlin::class.java.simpleName!!
         fun <T> handleError(error: Throwable, subject: ReplaySubject<T>) {
-//            val result: ErrorCode = when (error) {
-//                    is HttpException -> ErrorCode.ERROR_HOST_USERS_FAULT
-//                    is ParallelRequestException -> ErrorCode.ERROR_IGNORE
-//                    is SocketTimeoutException -> ErrorCode.ERROR_HOST_TIMEOUT
-//                    is IOException,
-//                    is UnknownHostException,
-//                    is UnknownServiceException,
-//                    is ConnectException,
-//                    is SocketException,
-//                    is ProtocolException -> ErrorCode.ERROR_HOST_UNAVAILABLE
-//                    else -> ErrorCode.ERROR_APP_INTERNAL
-//                }
--
-                        LogProxy.eTestFailedReport(TAG, ServerRequestException(
-                    "Error " + error.message + "\n" +
-                            "ErrorType "))
 
-        }
         }
     }
 }

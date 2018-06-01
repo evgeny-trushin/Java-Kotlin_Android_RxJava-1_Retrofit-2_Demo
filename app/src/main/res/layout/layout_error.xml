@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="There is no connection to the Internet"/>
+            android:text="@{ViewModel.errorCode.getDescriptionOfError()}"/>
 
         <Button
             android:layout_width="match_parent"

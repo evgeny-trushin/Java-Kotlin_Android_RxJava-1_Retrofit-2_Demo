@@ -3,4 +3,12 @@
     <string name="btn_navigate">Navigate</string>
     <string name="Title">Mode of Transport:</string>
     <string name="loading">Download data…</string>
+    <string name="error_network_unavailable">The network is unavailable</string>
+    <string name="error_host_unavailable">The server is unavailable</string>
+    <string name="error_host_fault">There is a server error there</string>
+    <string name="error_host_timeout">There is a server timeout</string>
+    <string name="error_response_data_are_null">The response from the server is null</string>
+    <string name="error_response_corrupted_data">The data in the response were corrupted</string>
+    <string name="error_internal">There is an internal error in the application</string>
+    <string name="error_ignor">""</string>
 </resources>

@@ -2,7 +2,6 @@ package com.example.assignment.i002.model.api;
 
 import com.example.assignment.helpers.ErrorsHandlerKotlin;
 import com.example.assignment.helpers.network.ApiAbstractFactory;
-import com.example.assignment.helpers.network.ErrorHandler;
 import com.example.assignment.i002.model.api.dto.SamplePojo;
 import com.example.assignment.i002.model.api.strategies.ExpressNetCacheStrategy;
 import com.example.assignment.i002.model.api.strategies.ExpressNetRequestStrategy;
@@ -13,9 +12,9 @@ import rx.exceptions.Exceptions;
 import rx.subjects.ReplaySubject;
 
 
-public class ExpressNetModel {
+public class ExpressNetworkModel {
 
-    private static final String TAG = ExpressNetModel.class.getSimpleName();
+    private static final String TAG = ExpressNetworkModel.class.getSimpleName();
 
     public static ReplaySubject<List<SamplePojo>> getData() throws Exception {
         ApiAbstractFactory<
@@ -40,10 +39,9 @@ public class ExpressNetModel {
                         } catch (Exception e) {
                             throw Exceptions.propagate(e);
                         }
-                    }, error -> ErrorsHandlerKotlin.Companion.handleError(error, subject)
+                    }, subject::onError
                 );
-        } catch (Exception e) {
-            ErrorsHandlerKotlin.Companion.handleError(e, subject);
+        } finally {
             apiFactory.getCacheStrategy().completeRequest(apiFactory.getRequestStrategy());
         }
         return subject;

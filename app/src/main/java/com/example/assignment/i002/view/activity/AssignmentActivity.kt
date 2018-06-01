@@ -8,9 +8,8 @@ import com.example.assignment.i002.R
 import com.example.assignment.i002.view.model.AssignmentViewModel
 import rx.exceptions.Exceptions
 
-import com.example.assignment.i002.model.api.ExpressNetModel
+import com.example.assignment.i002.model.api.ExpressNetworkModel
 import rx.android.schedulers.AndroidSchedulers
-
 
 class AssignmentActivity : AppCompatActivity() {
     private lateinit var mBind: ActivityAssignmentBinding
@@ -30,18 +29,22 @@ class AssignmentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBind = DataBindingUtil.setContentView(this, R.layout.activity_assignment)
         bindViewModel(restoreViewModelState(savedInstanceState, mStateKey))
-        ExpressNetModel.getData().observeOn(AndroidSchedulers.mainThread()).subscribe(
-                {
-                    //                    Thread.sleep(10000)
-                    bindViewModel(
-                            AssignmentViewModel(
-                                    data = it,
-                                    isLoading = false,
-                                    error = true)
-                    )
-                }, {
-            error -> throw Exceptions.propagate(error) }
-        )
+        try {
+            ExpressNetworkModel.getData().observeOn(AndroidSchedulers.mainThread()).subscribe(
+                    {
+                        bindViewModel(AssignmentViewModel(data = it))
+                    }, ::bindThrowableToViewModel
+            )
+        } catch (error: Exception) {
+            bindThrowableToViewModel(error)
+        }
+    }
+
+    private fun bindThrowableToViewModel(error: Throwable) {
+        bindViewModel(
+                AssignmentViewModel().apply {
+                    setExceptionAsErrorCode(error)
+                })
     }
 
     private fun restoreViewModelState(savedInstanceState: Bundle?, stateKey: String): AssignmentViewModel {
@@ -49,7 +52,7 @@ class AssignmentActivity : AppCompatActivity() {
 //        return if (null != localViewModel) {
 //            localViewModel as AssignmentViewModel
 //        } else {
-           return AssignmentViewModel(isLoading = true, error = false)
+        return AssignmentViewModel(isLoading = true, error = false)
 //        }
     }
 
