@@ -8,6 +8,6 @@ import retrofit2.http.GET;
 import rx.Observable;
 
 public interface ExpressNetApiOps {
-    @GET("/sample2.json")
+    @GET("/sample.json")
     Observable<List<SamplePojo>> getData();
 }

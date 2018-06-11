@@ -15,7 +15,7 @@ interface ModelViewLoadingErrorOps {
     var error: Boolean
     var errorCode: ErrorCode
     fun isErrorVisible() = VisibilityViewModel.visibleIfTrue(error)
-    fun clickOnRetryLoadButton(context: Context)
+    fun onRetry()
     fun setExceptionAsErrorCode(e: Throwable) {
         errorCode = when (e) {
             is HttpException -> ErrorCode.ERROR_HOST_FAULT

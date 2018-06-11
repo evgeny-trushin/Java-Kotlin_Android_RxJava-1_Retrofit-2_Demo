@@ -8,25 +8,41 @@ import android.net.Uri
 import android.support.v4.content.ContextCompat.startActivity
 import android.widget.ArrayAdapter
 import com.example.assignment.helpers.network.ErrorCode
+import com.example.assignment.i002.model.api.ExpressNetworkModel
 import com.example.assignment.i002.model.api.dto.SamplePojo
 import com.example.assignment.i002.view.activity.AssignmentActivity
 import com.example.assignment.i002.view.operation.ModelViewLoadingOps
+import rx.android.schedulers.AndroidSchedulers
 import java.io.Serializable
 
 data class AssignmentViewModel(
         var data: List<SamplePojo>? = null,
-        @Transient var context: Context? = null,
+        @Transient var context: AssignmentActivity? = null,
         override var isLoading: Boolean = false,
         override var error: Boolean = false,
         override var errorCode: ErrorCode = ErrorCode.ERROR_IGNORE
 ) : Serializable, ModelViewLoadingOps {
 
+    fun getData() {
+        try {
+            ExpressNetworkModel.getData().observeOn(AndroidSchedulers.mainThread()).subscribe(
+                    {
+                        context?.bindViewModel(AssignmentViewModel(data = it, error = false, isLoading = false))
+                    }, context!!::bindThrowableToViewModel
+            )
+        } catch (error: Exception) {
+            context?.bindThrowableToViewModel(error)
+        }
+    }
+
     var text: String? = ""
     private var position: Int? = -1
 
-    override fun clickOnRetryLoadButton(context: Context) {
+    override fun onRetry() {
         this.error = false
-        (context as AssignmentActivity).bindViewModel(this)
+        this.isLoading = true
+        context?.bindViewModel(this)
+        getData()
     }
 
     var proxyPosition: Int?

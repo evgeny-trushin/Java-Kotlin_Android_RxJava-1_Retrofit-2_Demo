@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import com.example.assignment.i002.databinding.ActivityAssignmentBinding
 import com.example.assignment.i002.R
 import com.example.assignment.i002.view.model.AssignmentViewModel
-import rx.exceptions.Exceptions
 
 import com.example.assignment.i002.model.api.ExpressNetworkModel
 import rx.android.schedulers.AndroidSchedulers
@@ -29,18 +28,10 @@ class AssignmentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBind = DataBindingUtil.setContentView(this, R.layout.activity_assignment)
         bindViewModel(restoreViewModelState(savedInstanceState, mStateKey))
-        try {
-            ExpressNetworkModel.getData().observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    {
-                        bindViewModel(AssignmentViewModel(data = it))
-                    }, ::bindThrowableToViewModel
-            )
-        } catch (error: Exception) {
-            bindThrowableToViewModel(error)
-        }
+        AssignmentViewModel(context = this).getData()
     }
 
-    private fun bindThrowableToViewModel(error: Throwable) {
+    fun bindThrowableToViewModel(error: Throwable) {
         bindViewModel(
                 AssignmentViewModel().apply {
                     setExceptionAsErrorCode(error)
