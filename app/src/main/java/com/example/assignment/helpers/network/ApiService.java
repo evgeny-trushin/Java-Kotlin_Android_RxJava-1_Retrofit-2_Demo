@@ -2,10 +2,10 @@ package com.example.assignment.helpers.network;
 
 import android.support.annotation.NonNull;
 
-import com.example.assignment.i002.BuildConfig;
-
 import java.util.concurrent.TimeUnit;
 
+import com.example.assignment.helpers.LogProxy;
+import com.example.assignment.i002.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -15,13 +15,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiService {
 
+    private static String TAG = ApiService.class.getSimpleName();
+    private static Retrofit.Builder builder = getBuilder();
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
         .readTimeout(30, TimeUnit.SECONDS)
         .connectTimeout(30, TimeUnit.SECONDS);
-
-
-    private static String TAG = ApiService.class.getSimpleName();
-    private static Retrofit.Builder builder = getBuilder();
 
     @NonNull
     private static Retrofit.Builder getBuilder() {
@@ -35,7 +33,6 @@ public class ApiService {
         ApiConstants.getInstance().setUrl(url);
         builder = getBuilder();
     }
-
 
     public static String getUrl() {
         return ApiConstants.getInstance().getUrl();
@@ -69,7 +66,7 @@ public class ApiService {
                 return chain.proceed(request);
             });
         } catch (Exception e) {
-//            cp.e(TAG, e);
+            LogProxy.e(TAG, e);
         }
         return httpClient.build();
     }

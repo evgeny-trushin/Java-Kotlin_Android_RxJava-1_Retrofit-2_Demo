@@ -6,8 +6,9 @@
     <data>
 
         <variable
-            name="ViewModel"
+            name="viewModel"
             type="com.example.assignment.i002.view.model.AssignmentViewModel"/>
+
     </data>
 
     <LinearLayout
@@ -15,32 +16,25 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!--
-                android:visibility="@{ViewModel.isErrorVisible()}"
-        -->
-
         <include
             android:id="@+id/layout_error"
             layout="@layout/layout_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="@{ViewModel.isErrorVisible()}"
-            />
+            android:visibility="@{viewModel.isErrorVisible()}"/>
 
         <include
             android:id="@+id/layout_loading"
             layout="@layout/layout_loading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="@{ViewModel.isProgressBarVisible()}"
-            />
+            android:visibility="@{viewModel.isProgressBarVisible()}"/>
 
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{ViewModel.isContentVisible()}"
-            >
+            android:visibility="@{viewModel.isContentVisible()}">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,11 +48,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:adapter="@{ViewModel.getSpinnerAdapter(context)}"
+                    android:adapter="@{viewModel.getSpinnerAdapter(context)}"
                     android:gravity="start"
                     android:padding="8dp"
-                    android:selectedItemPosition="@={ViewModel.proxyPosition}"
-                    />
+                    android:selectedItemPosition="@={viewModel.proxyPosition}"/>
 
                 <TextView
                     android:id="@+id/title"
@@ -66,16 +59,14 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="16dp"
                     android:text="@string/Title"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="16dp"
-                    android:text="@{ViewModel.text}"
-                    />
+                    android:text="@{viewModel.text}"/>
 
                 <Button
                     android:id="@+id/btn"
@@ -87,7 +78,7 @@
                     android:focusable="true"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:onClick="@{()->ViewModel.clickOnButton(context)}"
+                    android:onClick="@{()->viewModel.clickOnButton(context)}"
                     android:text="@string/btn_navigate"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
                     app:layout_constraintEnd_toStartOf="@+id/textView2"

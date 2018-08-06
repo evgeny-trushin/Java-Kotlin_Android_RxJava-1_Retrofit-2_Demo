@@ -20,8 +20,10 @@ data class AssignmentViewModel(
         @Transient var context: AssignmentActivity? = null,
         override var isLoading: Boolean = false,
         override var error: Boolean = false,
-        override var errorCode: ErrorCode = ErrorCode.ERROR_IGNORE
-) : Serializable, ModelViewLoadingOps {
+        override var errorCode: ErrorCode = ErrorCode.ERROR_IGNORE) : Serializable, ModelViewLoadingOps {
+
+    var text: String? = ""
+    private var position: Int? = -1
 
     fun getData() {
         try {
@@ -35,34 +37,31 @@ data class AssignmentViewModel(
         }
     }
 
-    var text: String? = ""
-    private var position: Int? = -1
-
     override fun onRetry() {
-        this.error = false
-        this.isLoading = true
+        error = false
+        isLoading = true
         context?.bindViewModel(this)
         getData()
     }
 
-    var proxyPosition: Int?
-        get() = ObservableField<Int>(position).get()
+    var proxyPosition: Int
+        get() = ObservableField<Int>(position).get()!!
         set(newSelectedPosition) {
             if (-1 == position || position != newSelectedPosition) {
-                val it = data?.get(newSelectedPosition!!)
+                val it = data?.get(newSelectedPosition)
                 text = "Car: " + it?.fromcentral?.car
                 if (null != it?.fromcentral?.train) {
                     text += "\nTrain: " + it.fromcentral.train
                 }
                 position = newSelectedPosition
-                (context!! as AssignmentActivity).bindViewModel(this)
+                context!!.bindViewModel(this)
             }
         }
 
     fun getSpinnerAdapter(context: Context): ArrayAdapter<String> {
         val array = ArrayList<String>()
-        if (null != data) {
-            for (datum in this.data!!) {
+        data?.let {
+            for (datum in it) {
                 array.add(datum.name)
             }
         }
@@ -70,7 +69,7 @@ data class AssignmentViewModel(
     }
 
     fun clickOnButton(context: Context) {
-        val location = (data?.get(proxyPosition!!) as SamplePojo).location
+        val location = (data?.get(proxyPosition) as SamplePojo).location
         val gmmIntentUri = Uri.parse("geo:" + location.latitude + "," + location.longitude)
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
         mapIntent.`package` = "com.google.android.apps.maps"

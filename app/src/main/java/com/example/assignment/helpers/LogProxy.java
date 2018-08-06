@@ -32,8 +32,7 @@ public class LogProxy {
             Log.e(tag + " | Error", "" + e.getMessage());
             try {
                 e.printStackTrace();
-            } catch (java.lang.Exception ignore) {
-            }
+            } catch (java.lang.Exception ignore) {}
         }
     }
 

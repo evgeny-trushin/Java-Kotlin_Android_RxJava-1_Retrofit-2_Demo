@@ -15,8 +15,7 @@ public class ParallelRequest {
     private final int PARALLEL_REQUEST_TIMEOUT = 15;
     private String TAG = ParallelRequest.class.getSimpleName();
 
-    private ParallelRequest() {
-    }
+    private ParallelRequest() {}
 
     /**
      * Resets the queue
