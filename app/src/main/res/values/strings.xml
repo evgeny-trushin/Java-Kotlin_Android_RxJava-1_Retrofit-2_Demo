@@ -10,5 +10,5 @@
     <string name="error_response_data_are_null">The response from the server is null</string>
     <string name="error_response_corrupted_data">The data in the response were corrupted</string>
     <string name="error_internal">There is an internal error in the application</string>
-    <string name="error_ignor">""</string>
+    <string name="error_ignore">""</string>
 </resources>
